@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/menu.dart';
+
+/// Titik masuk aplikasi: menjalankan widget root [MyApp].
 void main() {
   runApp(const MyApp());
 }
 
+/// Widget root aplikasi: mengatur judul, tema, dan halaman awal.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

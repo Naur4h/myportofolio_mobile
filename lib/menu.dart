@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Halaman utama portofolio: kartu identitas dan kisi tombol aksi.
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
@@ -14,7 +15,8 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("Lihat Education", Icons.school, Colors.teal),
     ItemHomepage("Logout", Icons.logout, Colors.red),
   ];
-   @override
+
+  @override
   Widget build(BuildContext context) {
     // Scaffold menyediakan struktur visual dasar halaman (AppBar, Body, SnackBar).
     return Scaffold(
@@ -29,8 +31,8 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      // Body halaman utama dengan padding di sekelilingnya.
-           body: SingleChildScrollView(
+      // Body halaman utama: dapat digulir, lebarnya dibatasi, dan diberi padding.
+      body: SingleChildScrollView(
         // Membuat halaman dapat digulir agar tidak overflow pada layar yang pendek.
         child: Center(
           // Memusatkan konten secara horizontal pada layar lebar.
@@ -93,6 +95,7 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
+/// Kartu kecil yang menampilkan satu pasang judul dan isi, misalnya NPM.
 class InfoCard extends StatelessWidget {
   // Kartu informasi yang menampilkan judul (title) dan isi (content).
   final String title;
@@ -124,6 +127,7 @@ class InfoCard extends StatelessWidget {
   }
 }
 
+/// Model data satu tombol menu: nama, ikon, dan warna latarnya.
 class ItemHomepage {
   final String name;
   final IconData icon;
@@ -132,6 +136,7 @@ class ItemHomepage {
   ItemHomepage(this.name, this.icon, this.color);
 }
 
+/// Kartu tombol yang dapat ditekan; menampilkan SnackBar sesuai nama item.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -140,7 +145,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // Menggunakan warna sekunder dari skema tema aplikasi.
+      // Warna latar kartu diambil dari atribut color pada item.
       color: item.color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
@@ -154,7 +159,7 @@ class ItemCard extends StatelessWidget {
                 content: Text("Kamu telah menekan tombol ${item.name}!"),
                 backgroundColor: item.color,
                 behavior: SnackBarBehavior.floating,
-              )
+              ),
             );
         },
         child: Container(
