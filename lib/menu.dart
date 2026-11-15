@@ -10,6 +10,8 @@ class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("Lihat Proyek", Icons.folder, Colors.blue),
     ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
+    ItemHomepage("Lihat Skills", Icons.star, Colors.purple),
+    ItemHomepage("Lihat Education", Icons.school, Colors.teal),
     ItemHomepage("Logout", Icons.logout, Colors.red),
   ];
    @override
@@ -148,7 +150,11 @@ class ItemCard extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
+              SnackBar(
+                content: Text("Kamu telah menekan tombol ${item.name}!"),
+                backgroundColor: item.color,
+                behavior: SnackBarBehavior.floating,
+              )
             );
         },
         child: Container(
