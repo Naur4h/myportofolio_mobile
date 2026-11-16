@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:myportofolio_mobile/menu.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:myportofolio_mobile/screens/menu.dart';
 
 /// Titik masuk aplikasi: menjalankan widget root [MyApp].
 void main() {
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'MyPortfolio',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
