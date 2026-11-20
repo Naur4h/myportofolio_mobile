@@ -2,7 +2,7 @@
 
 Aplikasi mobile portofolio pribadi berbasis Flutter
 
-## Deskripsi Proyek
+# Tugas 7
 
 Melanjutkan Tutorial 08, saya membangun versi mobile dari portofolio pribadi saya dengan Flutter. Halaman utama (`MyHomePage`) berupa `StatelessWidget` yang dipisahkan ke `lib/menu.dart`, sedangkan `lib/main.dart` hanya berisi titik masuk aplikasi dan tema.
 
@@ -129,3 +129,96 @@ Contoh prompt dan hasilnya:
 6. **Jelaskan konsep hot reload di Flutter dan apa perbedaannya dengan hot restart! Kapan kita tidak bisa hanya mengandalkan hot reload dan harus melakukan hot restart atau full restart?**
 
    Hot reload memasukkan kode Dart yang baru ke aplikasi yang sedang berjalan lalu membangun ulang widget tree, **tanpa menghilangkan state** (di terminal: tombol `r`). Hot restart memulai ulang aplikasi dari `main()` sehingga **semua state kembali ke awal** (tombol `R`), tetapi lebih cepat daripada menjalankan ulang dari nol. Hot reload tidak cukup bila: mengubah `main()` atau nilai awal variabel global/statis, mengubah jenis kelas widget (misalnya `StatefulWidget` menjadi `StatelessWidget`, seperti saat saya merombak `MyHomePage`), atau mengubah logika inisialisasi. Full restart (hentikan lalu `flutter run` lagi) diperlukan saat mengubah `pubspec.yaml` (dependensi atau aset), konfigurasi native seperti folder `android/`, atau menambah plugin.
+
+# Tugas 8
+
+## Deskripsi Proyek
+
+Melanjutkan Tutorial 09 dan Tugas 7, saya menambahkan navigasi, layout, dan formulir pada aplikasi MyPortfolio Mobile. Pada Tutorial 09, saya membuat drawer (`LeftDrawer`), formulir Tambah Proyek (`ProjectFormPage`), dan merapikan struktur folder menjadi `lib/screens/` dan `lib/widgets/`. Pada tugas ini, saya menerapkan pola yang sama untuk bagian **Education**: halaman formulir baru (`EducationFormPage`), kartu aksi "Tambah Education" di halaman utama, dan opsi "Add Education" di drawer.
+
+Formulir Education memiliki enam input:
+- Nama Institusi (`TextFormField`, wajib, maksimal 100 karakter)
+- Jenjang (`DropdownButtonFormField`: SMA/SMK, D3, S1, S2, S3)
+- Jurusan / Program Studi (`TextFormField`, wajib, maksimal 100 karakter)
+- Tanggal Mulai (`showDatePicker`, wajib)
+- Tanggal Selesai (`showDatePicker`, wajib kecuali masih berkuliah, tidak boleh sebelum tanggal mulai)
+- IPK (`TextFormField` angka, opsional, harus 0.00 sampai 4.00)
+
+Validasi dijalankan lewat `FormState.validate()` saat tombol Simpan ditekan. Isian yang kosong atau hanya berisi spasi ditolak (memakai `trim()`). Setelah semua input lolos, ringkasan isian ditampilkan dalam `AlertDialog` dengan tombol Tutup.
+
+Tambahan di luar instruksi minggu ini:
+- **Switch "Masih berkuliah di sini"**: jika aktif, field Tanggal Selesai dinonaktifkan dan dialog menampilkan "Sekarang".
+- **Validasi langsung saat berinteraksi** (`AutovalidateMode.onUserInteraction`), sehingga pesan kesalahan muncul tanpa menekan Simpan lebih dulu.
+- **Penghitung karakter** (maks. 100) pada Nama Institusi dan Jurusan.
+- **Validasi ulang otomatis** pada Tanggal Selesai saat Tanggal Mulai diubah.
+- Komentar dan docstring pada kode formulir.
+
+## Struktur Aplikasi
+
+| Berkas | Isi |
+|---|---|
+| `lib/main.dart` | `main()` dan `MyApp` (`MaterialApp`, tema indigo) |
+| `lib/screens/menu.dart` | `MyHomePage`, `InfoCard`, `ItemHomepage` (model) |
+| `lib/screens/project_form.dart` | `ProjectFormPage` (formulir Tambah Proyek, Tutorial 09) |
+| `lib/screens/education_form.dart` | `EducationFormPage` (formulir Tambah Education, Tugas 8) |
+| `lib/widgets/left_drawer.dart` | `LeftDrawer` (opsi Home, Add Project, Add Education), dipakai di ketiga halaman |
+| `lib/widgets/project_card.dart` | `ItemCard` (kartu aksi dengan `Navigator.push` ke formulir) |
+
+## Weekly Progress
+
+**16 November 2026 (Tutorial 09)**
+- Memasang paket `material_ui` (Flutter 3.47.9) dan mengganti import `flutter/material.dart`.
+- Membuat `LeftDrawer`, `ProjectFormPage`, dan dialog ringkasan.
+- Memindahkan file ke `lib/screens/` dan `lib/widgets/`, memindahkan `ItemCard` ke `project_card.dart`, lalu push ke GitHub.
+
+**19 - 20 November 2026 (Tugas 8)**
+- Membuat `EducationFormPage` dengan enam input dan validasi.
+- Menambahkan kartu "Tambah Education" di halaman utama dan opsi "Add Education" di drawer.
+- Menambahkan switch "Masih berkuliah", validasi langsung, dan penghitung karakter.
+- Menjalankan `flutter analyze` (hasil: No issues found! (ran in 3.9s)) dan menguji alur kartu, drawer, input tidak valid, input valid, serta navigasi ke Home.
+- Menulis jawaban reflektif dan AI disclosure.
+
+## AI Disclosure & Usage
+
+**Tools:** Claude
+
+**Strategi prompting:**
+- Meminta AI membandingkan hasil dengan rubrik sebelum menulis README, lalu memutuskan sendiri fitur tambahan yang dipakai.
+
+**Bagian yang dibantu AI:**
+- Memahami alur navigasi (`push`, `pushReplacement`, `pop`) dan struktur `Form`, `GlobalKey<FormState>`, serta `validator`.
+- Menentukan aturan validasi (spasi saja, panjang maksimal, urutan tanggal, rentang IPK).
+- Membaca pesan error terminal, misalnya timeout koneksi debugger Chrome dan garis merah di editor.
+
+Contoh prompt dan hasilnya:
+- Prompt: "ywdh ap update aja versi fliutterny? enakny gmn"
+  Claude: Menjelaskan bahwa Flutter 3.47.9 tidak perlu di-update karena materi menyediakan jalur untuk versi itu (`flutter pub add material_ui`), dan update lewat zip berisiko di dekat tenggat.
+- Prompt: "kok error" (dengan screenshot)
+  Claude: Menunjukkan bahwa satu baris `ItemHomepage` yang saya tempel berada di dalam class model, bukan di dalam list `items` pada `MyHomePage`.
+- Prompt: "udh kriteria 4/4 blm sebelum masuk readme"
+  Claude: Membandingkan kondisi proyek dengan rubrik dan menyebut bahwa fitur ekstra, `flutter analyze`, riwayat commit, dan README masih kurang. Dari situ saya memutuskan menambahkan switch "Masih berkuliah" dan validasi langsung.
+
+**Analisis keterbatasan AI dan perbaikan manual:**
+- **AI tidak melihat berkas saya.** Pada Tutorial 09, kartu "Tambah Proyek" hanya menampilkan SnackBar karena `menu.dart` saya masih memuat `ItemCard` lama. AI baru bisa menyimpulkan penyebabnya setelah saya menempelkan isi berkas. Saya yang menelusuri berkas mana yang dipakai aplikasi dan mengganti isinya.
+- **Error yang bukan dari kode.** Timeout koneksi debugger ("Failed to connect to the web debug service") ternyata masalah Chrome di Windows, bukan bug kode. Saya menutup Chrome dan menjalankan ulang `flutter run -d chrome`.
+- **AI tidak bisa menjalankan aplikasi.** Kebenaran hasil saya periksa sendiri di Chrome: spasi saja di Nama Institusi, tanggal selesai sebelum tanggal mulai, IPK 5, switch "Masih berkuliah", dan tampilan dialog.
+
+## Pertanyaan Reflektif
+
+### Tugas 8
+
+1. **Perbedaan `Navigator.push()`, `Navigator.pushReplacement()`, dan `Navigator.pop()`; metode untuk membuka formulir dari kartu aksi; dan cara opsi Home di drawer membawa pengguna kembali ke halaman utama.**
+
+   Navigator mengatur halaman sebagai tumpukan (stack). `push()` menaruh halaman baru di atas tumpukan, sehingga halaman sebelumnya tetap ada di bawahnya dan tombol kembali bisa dipakai. `pushReplacement()` mengganti halaman paling atas dengan halaman baru, jadi halaman lama dibuang dan tidak bisa dikembali-kan lewat tombol Back. `pop()` membuang halaman paling atas dan kembali ke halaman di bawahnya. Untuk membuka formulir dari kartu aksi saya memakai `Navigator.push()` pada `ItemCard`, agar pengguna dapat kembali ke halaman utama dengan tombol kembali. Opsi Home di drawer memakai `Navigator.pushReplacement()` dengan `MaterialPageRoute` yang membangun `MyHomePage()`. Dari halaman formulir, formulir diganti dengan halaman utama sehingga pengguna sampai di halaman utama. Catatan dari pengujian: karena formulir dibuka dengan `push()`, halaman utama yang lama masih tersisa di bawah tumpukan.
+
+2. **Peran susunan `Scaffold`, `AppBar`, dan `Drawer` dalam menjaga konsistensi, serta contoh warna tema yang dipakai di lebih dari satu halaman.**
+
+   `Scaffold` menyediakan kerangka halaman yang sama (AppBar di atas, body di tengah, drawer di sisi kiri), `AppBar` memberi identitas halaman, dan `Drawer` memberi navigasi yang sama di mana pun pengguna berada. Karena `LeftDrawer` adalah satu widget yang dipakai di halaman utama, formulir Tambah Proyek, dan formulir Tambah Education, menu dan tampilannya selalu seragam, dan perubahan cukup dilakukan di satu berkas. Contoh warna tema: indigo dipakai pada AppBar halaman utama (lewat `colorScheme.primary` dari tema), AppBar kedua formulir (`Colors.indigo`), `DrawerHeader` di `LeftDrawer`, dan tombol Simpan di kedua formulir, sehingga semua halaman terlihat sebagai satu aplikasi.
+
+3. **Alasan memilih tata letak formulir, serta peran widget pengatur jarak dan penggulir saat ruang layar terbatas.**
+
+   Tiap input saya letakkan di dalam `Column` dan dibungkus `Padding` agar tersusun vertikal, mudah dibaca, dan mudah dijangkau jempol di layar ponsel. `Padding` memberi jarak antar-field supaya input tidak menempel dan pesan kesalahan tidak bertabrakan dengan field di bawahnya. `SingleChildScrollView` membuat seluruh form dapat digulir sehingga tidak terjadi overflow saat layar pendek atau saat papan ketik muncul dan menutupi sebagian layar. Padding bawah tambahan memastikan tombol Simpan tetap bisa digulir ke area yang terlihat. Pada formulir Education, ada enam field, switch, dan tombol, jadi tanpa penggulir bagian bawah mudah tidak terjangkau.
+
+4. **Peran `GlobalKey<FormState>`, `validator`, dan `validate()` saat Simpan ditekan, serta contoh nilai yang ditolak.**
+
+   `GlobalKey<FormState>` memberi akses ke `FormState` dari luar widget `Form`, sehingga tombol Simpan bisa memanggil `_formKey.currentState!.validate()`, dan juga `reset()` untuk mengosongkan form. `validator` adalah fungsi pada tiap field yang mengembalikan teks pesan kesalahan jika nilainya tidak valid, atau `null` jika valid. `validate()` menjalankan semua `validator` di dalam `Form`, menampilkan pesan pada field yang salah, dan mengembalikan `true` hanya jika semuanya lolos. Dialog ringkasan baru ditampilkan setelah itu. Contoh nilai yang ditolak: Nama Institusi yang hanya berisi spasi (ditolak karena `trim()` menjadikannya kosong), IPK `5` (di luar 0.00 sampai 4.00), dan Tanggal Selesai yang lebih awal dari Tanggal Mulai. Memilih jenis input atau papan ketik saja belum cukup: `numberWithOptions` pada kolom IPK hanya mengatur papan ketik dan di Chrome pengguna tetap bisa mengetik atau menempelkan teks apa saja, sedangkan date picker tidak tahu bahwa tanggal selesai harus sesudah tanggal mulai. Aturan semacam itu hanya bisa dijaga oleh `validator`.
