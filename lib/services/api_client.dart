@@ -16,12 +16,14 @@ class ApiException implements Exception {
 
 /// Mengirim request HTTP ke Django REST Framework.
 class ApiClient {
-  ApiClient({http.Client? client}) : _client = client ?? http.Client();
+  ApiClient({http.Client? client, this.baseUrl = apiBaseUrl})
+    : _client = client ?? http.Client();
 
   final http.Client _client;
+  final String baseUrl;
 
   Uri _uri(String path) {
-    final base = apiBaseUrl.replaceFirst(RegExp(r'/$'), '');
+    final base = baseUrl.replaceFirst(RegExp(r'/$'), '');
     return Uri.parse('$base$path');
   }
 
@@ -65,7 +67,10 @@ class ApiClient {
   }) async {
     final response = await _client.post(
       _uri('/api/v1/projects/'),
-      headers: _headers(token: token),
+      headers: {
+        ..._headers(token: token),
+        'Accept': 'application/json',
+      },
       body: jsonEncode(project.toJson()),
     );
     if (response.statusCode != 201) _throwFor(response);

@@ -141,9 +141,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text('Add Education Form'),
-        ),
+        title: const Center(child: Text('Add Education Form')),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
@@ -201,10 +199,10 @@ class _EducationFormPageState extends State<EducationFormPage> {
                   ),
                   initialValue: _level,
                   items: _levels
-                      .map((level) => DropdownMenuItem(
-                            value: level,
-                            child: Text(level),
-                          ))
+                      .map(
+                        (level) =>
+                            DropdownMenuItem(value: level, child: Text(level)),
+                      )
                       .toList(),
                   onChanged: (String? newValue) {
                     setState(() {
@@ -324,8 +322,9 @@ class _EducationFormPageState extends State<EducationFormPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Contoh: 3.75 (opsional)",
                     labelText: "IPK",
@@ -342,8 +341,9 @@ class _EducationFormPageState extends State<EducationFormPage> {
                     if (value == null || value.trim().isEmpty) {
                       return null; // IPK opsional
                     }
-                    final gpa =
-                        double.tryParse(value.trim().replaceAll(',', '.'));
+                    final gpa = double.tryParse(
+                      value.trim().replaceAll(',', '.'),
+                    );
                     if (gpa == null) {
                       return "IPK harus berupa angka!";
                     }

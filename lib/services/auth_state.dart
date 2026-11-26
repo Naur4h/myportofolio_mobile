@@ -3,7 +3,7 @@ import 'package:myportofolio_mobile/services/api_client.dart';
 
 /// Menyimpan token sesi selama aplikasi berjalan.
 class AuthState extends ChangeNotifier {
-  AuthState(this._apiClient);
+  AuthState(this._apiClient, {String? initialToken}) : _token = initialToken;
 
   final ApiClient _apiClient;
   String? _token;
