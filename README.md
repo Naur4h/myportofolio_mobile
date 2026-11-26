@@ -306,6 +306,11 @@ Bagian **Experience** diintegrasikan dengan API Django. Pengambilan daftar bersi
 
 **Pengecekan dan batasan:** Skema Experience dibandingkan dengan model dan serializer Django tanpa mengubah backend. Code generation, `dart format`, `flutter analyze`, dan `flutter test` dijalankan. Tes API memakai `MockClient`, jadi bukan pengganti login dengan akun nyata; login dan POST terhadap akun pribadi tidak diuji karena kredensial tidak digunakan dalam sesi ini. Integrasi langsung tetap perlu diperiksa saat aplikasi dan backend dijalankan bersama.
 
+**Analisis kritis keterbatasan AI dan perbaikan yang saya terapkan:**
+- Hasil AI tidak langsung benar. Saat direview, ditemukan izin `INTERNET` dan `usesCleartextTraffic` belum ada di manifest, default `API_BASE_URL` memakai `localhost` (gagal di emulator Android), serta workflow CI tidak memakai `very_good_workflows`.
+- Test bisa menipu: test `MockClient` kata AI lulus, padahal model Experience salah mengasumsikan `starred_by_names` sebagai list. Backend Django mengirim string, sehingga daftar akan gagal dimuat dengan backend asli. Bug ini hanya ketahuan setelah data serializer dibandingkan manual. Pelajaran: test dengan data mock buatan AI belum membuktikan kecocokan dengan API nyata.
+- AI tidak dapat menguji login dengan akun nyata. Saya menguji sendiri alur login, POST, dan penanganan 401 (menghapus token di Django Admin) di Chrome terhadap server Django lokal.
+- Saya menentukan sendiri keputusan yang tidak bisa diambil AI, misalnya memilih Experience (karena backend tidak punya endpoint Education), mempertahankan workflow `very_good_workflows`, dan mengisi variable `API_BASE_URL` di GitHub.
 
 ### Pertanyaan Reflektif
 
