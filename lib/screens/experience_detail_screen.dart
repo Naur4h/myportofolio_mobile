@@ -62,9 +62,7 @@ class ExperienceDetailScreen extends StatelessWidget {
             'Bintang dari akun ini: ${experience.isStarred ? 'Ya' : 'Belum'}',
           ),
           const SizedBox(height: 8),
-          Text(
-            'Diberi bintang oleh: ${names.isEmpty ? '-' : names.join(', ')}',
-          ),
+          Text('Diberi bintang oleh: ${names.trim().isEmpty ? '-' : names}'),
         ],
       ),
     );

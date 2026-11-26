@@ -17,7 +17,7 @@ class Experience {
     this.isOngoing = false,
     this.starCount = 0,
     this.isStarred = false,
-    this.starredByNames = const [],
+    this.starredByNames = '',
   });
 
   /// UUID dibuat oleh server dan hanya dibaca aplikasi.
@@ -50,8 +50,8 @@ class Experience {
   @JsonKey(includeToJson: false, defaultValue: false)
   final bool isStarred;
 
-  @JsonKey(includeToJson: false, defaultValue: <String>[])
-  final List<String> starredByNames;
+  @JsonKey(includeToJson: false, defaultValue: '')
+  final String starredByNames;
 
   factory Experience.fromJson(Map<String, dynamic> json) =>
       _$ExperienceFromJson(json);

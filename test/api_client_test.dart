@@ -27,7 +27,7 @@ void main() {
               'is_ongoing': true,
               'star_count': 3,
               'is_starred': false,
-              'starred_by_names': ['Ayu'],
+              'starred_by_names': 'Ayu',
             },
           ]),
           200,
@@ -42,7 +42,7 @@ void main() {
       expect(experiences.single.id, 'f67a0c6f-6434-4afe-98d6-ec0aec0444d0');
       expect(experiences.single.categoryDisplay, 'Internship');
       expect(experiences.single.isOngoing, isTrue);
-      expect(experiences.single.starredByNames, ['Ayu']);
+      expect(experiences.single.starredByNames, 'Ayu');
       expect(experiences.single.thumbnail, isNull);
       mockClient.close();
     });
@@ -64,7 +64,7 @@ void main() {
             'is_ongoing': true,
             'star_count': 0,
             'is_starred': false,
-            'starred_by_names': [],
+            'starred_by_names': '',
           }),
           201,
           headers: {'content-type': 'application/json'},
