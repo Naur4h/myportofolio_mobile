@@ -286,7 +286,7 @@ Bagian **Experience** diintegrasikan dengan API Django. Pengambilan daftar bersi
 
 ### AI Disclosure 
 
-**Alat yang digunakan:** Claude membantu review/verifikasi kebutuhan dan penyusunan prompt.
+**Alat yang digunakan:** Claude membantu review/verifikasi kebutuhan.
 
 **Peran saya:** Saya menentukan bagian yang diintegrasikan, memberikan kontrak API dan batasan agar backend tidak diubah.
 
