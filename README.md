@@ -314,10 +314,18 @@ Bagian **Experience** diintegrasikan dengan API Django. Pengambilan daftar bersi
 
 ### Pertanyaan Reflektif
 
-1. `@JsonSerializable(fieldRename: FieldRename.snake)` menjaga properti Dart seperti `starredByNames` tetap cocok dengan nama JSON API `starred_by_names`. `@JsonKey(includeToJson: false)` mengecualikan field yang dibuat server atau hanya digunakan pada respons. Contoh bug yang dicegah adalah UUID `id` atau `started_at` dari server ikut terkirim pada POST, atau nama camelCase dikirim sehingga serializer Django tidak mengenali field tersebut.
+1. **Bagaimana `@JsonSerializable(fieldRename: FieldRename.snake)` dan `@JsonKey(includeToJson: false)` membantu menyesuaikan model Flutter dengan API backend? Berikan contoh field yang tidak perlu dikirim saat membuat data.**
 
-2. Future untuk daftar Experience dibuat sekali di `initState()` agar pemanggilan `build()` berulang tidak memicu request baru terus-menerus. Request baru dibuat saat pengguna melakukan Refresh atau Retry. `ApiException` mempertahankan status HTTP dan pesan error, sehingga aplikasi bisa membedakan 401, 403, dan validasi 400. Jika error hanya diubah menjadi `null`, alasan kegagalan bisa hilang atau tampak seperti daftar kosong.
+   `@JsonSerializable(fieldRename: FieldRename.snake)` mengubah nama properti Dart seperti `starredByNames` menjadi nama JSON API `starred_by_names`. `@JsonKey(includeToJson: false)` mengecualikan field yang hanya digunakan dari respons API atau dibuat oleh server. Contohnya, `id` dan `startedAt` berasal dari server, jadi tidak perlu dikirim saat aplikasi membuat data.
 
-3. `SessionAuthentication` menggunakan sesi/cookie browser dan biasanya memerlukan perlindungan CSRF untuk request yang mengubah data. Flutter menggunakan `TokenAuthentication` melalui header `Authorization: Token <key>`, sehingga request tidak bergantung pada cookie browser. `SessionAuthentication` tetap dipertahankan pada backend untuk klien web yang menggunakannya.
+2. **Mengapa Future untuk mengambil daftar Experience disimpan di `initState()`, dan bagaimana `ApiException` membantu menangani error dari API?**
 
-4. Job `build` memakai [`very_good_workflows`](https://github.com/VeryGoodOpenSource/very_good_workflows/blob/v2/.github/workflows/flutter_package.yml) untuk mengambil dependency, menjalankan code generation, memeriksa format, menjalankan analyzer, serta tes dan laporan coverage. Konfigurasi proyek mengecualikan `*.g.dart` dari coverage dan memakai batas minimum coverage 0. Pemeriksaan Bloc lint dan cognitive complexity tidak diaktifkan. Job `build_apk` membangun APK release menggunakan `API_BASE_URL` dari GitHub Actions Variables dan mengunggahnya sebagai artifact `app-release-apk`. Berkas `*.g.dart` diabaikan Git karena dapat dibuat ulang dari model; CI menjalankan `build_runner` sebelum analisis, tes, dan build.
+   Future untuk daftar Experience dibuat sekali di `initState()` supaya pemanggilan `build()` berulang tidak terus membuat request baru. Request baru bisa dibuat saat pengguna memilih Refresh atau Retry. `ApiException` mempertahankan status HTTP dan pesan error sehingga aplikasi dapat membedakan respons seperti 401, 403, dan kesalahan validasi 400. Jika error diubah menjadi `null`, penyebab kegagalannya bisa hilang atau terlihat seperti daftar kosong.
+
+3. **Apa perbedaan `SessionAuthentication` dan `TokenAuthentication`, dan mengapa aplikasi Flutter menggunakan autentikasi token?**
+
+   `SessionAuthentication` memakai sesi dan cookie browser, serta umumnya memerlukan perlindungan CSRF untuk request yang mengubah data. Aplikasi Flutter memakai `TokenAuthentication` melalui header `Authorization: Token <key>`, sehingga request tidak bergantung pada cookie browser. `SessionAuthentication` tetap tersedia untuk klien web yang menggunakannya.
+
+4. **Apa fungsi job `build` dan `build_apk` pada workflow GitHub Actions proyek ini?**
+
+   Job `build` memakai [`very_good_workflows`](https://github.com/VeryGoodOpenSource/very_good_workflows/blob/v2/.github/workflows/flutter_package.yml) untuk mengambil dependency, menjalankan code generation, memeriksa format dan analyzer, menjalankan test, serta membuat laporan coverage. File `*.g.dart` dikecualikan dari coverage dan batas minimum coverage ditetapkan 0. Job `build_apk` membangun APK release menggunakan `API_BASE_URL` dari GitHub Actions Variables, lalu mengunggahnya sebagai artifact `app-release-apk`.
