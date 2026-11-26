@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:myportofolio_mobile/config.dart';
+import 'package:myportofolio_mobile/models/experience.dart';
 import 'package:myportofolio_mobile/models/project.dart';
 
 class ApiException implements Exception {
@@ -37,7 +38,21 @@ class ApiClient {
     try {
       final decoded = jsonDecode(response.body);
       if (decoded is Map<String, dynamic>) {
-        message = decoded['detail']?.toString() ?? response.body;
+        final detail = decoded['detail'];
+        if (detail != null) {
+          message = detail.toString();
+        } else {
+          final fieldErrors = decoded.entries
+              .map((entry) {
+                final value = entry.value;
+                final description = value is List
+                    ? value.map((item) => item.toString()).join(' ')
+                    : value.toString();
+                return '${entry.key}: $description';
+              })
+              .join('\n');
+          if (fieldErrors.isNotEmpty) message = fieldErrors;
+        }
       }
     } on FormatException {
       // Gunakan response mentah bila server tidak mengirim JSON.
@@ -94,5 +109,47 @@ class ApiClient {
       headers: _headers(token: token),
     );
     if (response.statusCode != 204) _throwFor(response);
+  }
+
+  /// Mengambil daftar Experience publik, opsional difilter berdasarkan judul.
+  Future<List<Experience>> getExperiences({String? title}) async {
+    var uri = _uri('/api/v1/experience/');
+    final query = title?.trim() ?? '';
+    if (query.isNotEmpty) {
+      uri = uri.replace(queryParameters: {'title': query});
+    }
+
+    final response = await _client.get(
+      uri,
+      headers: const {'Accept': 'application/json'},
+    );
+    if (response.statusCode != 200) _throwFor(response);
+
+    final decoded = jsonDecode(response.body);
+    if (decoded is! List) {
+      throw const FormatException('Respons experience bukan JSON array.');
+    }
+    return decoded
+        .map((item) => Experience.fromJson(item as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Menambahkan Experience dengan token pengguna.
+  Future<Experience> createExperience(
+    Experience experience, {
+    required String token,
+  }) async {
+    final response = await _client.post(
+      _uri('/api/v1/experience/'),
+      headers: {
+        ..._headers(token: token),
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(experience.toJson()),
+    );
+    if (response.statusCode != 201) _throwFor(response);
+    return Experience.fromJson(
+      jsonDecode(response.body) as Map<String, dynamic>,
+    );
   }
 }
