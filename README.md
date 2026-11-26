@@ -294,6 +294,8 @@ Bagian **Experience** diintegrasikan dengan API Django. Pengambilan daftar bersi
 
 **Bagian yang dibantu AI:** model JSON dan code generation, metode GET/POST serta format pesan error, layar daftar/detail/form, validasi dan penanganan autentikasi, navigasi menu/drawer, unit test `MockClient`, workflow CI, dan draf dokumentasi reflektif.
 
+**Contoh nyata:** Claude menemukan bahwa starred_by_names dari Django bertipe string, tetapi model Flutter sebelumnya menganggapnya sebagai list. Ketidaksesuaian itu membuat daftar Experience gagal dimuat ketika memakai backend asli. Model Flutter, tampilan detail, dan data mock kemudian disesuaikan dengan tipe string dari API.
+
 **Contoh Prompt:** 
 **(error saat pengujian) Prompt saya:** (menempel error) `{"detail":"JSON parse error - Expecting property name enclosed in double quotes..."}` dan `curl: (3) URL rejected: Found a backslash`
 **Jawaban Claude:** server sudah merespons, jadi koneksi aman. Masalahnya PowerShell merusak tanda kutip `\"` pada `curl.exe`. Solusinya memakai `Invoke-RestMethod` dengan body dalam tanda kutip tunggal. Setelah itu token berhasil didapat.
