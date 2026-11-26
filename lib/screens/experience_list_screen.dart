@@ -33,13 +33,12 @@ class _ExperienceListScreenState extends State<ExperienceListScreen> {
   }
 
   Future<void> _openDetail(Experience experience) async {
-    final created = await Navigator.push<bool>(
+    await Navigator.push<void>(
       context,
-      MaterialPageRoute<bool>(
+      MaterialPageRoute<void>(
         builder: (_) => ExperienceDetailScreen(experience: experience),
       ),
     );
-    if (created == true) await _reload();
   }
 
   @override

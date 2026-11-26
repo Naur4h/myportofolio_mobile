@@ -14,7 +14,7 @@ Future<void> openExperienceForm(BuildContext context) async {
   );
   if (created != true || !context.mounted) return;
 
-  Navigator.pushReplacement(
+  Navigator.push(
     context,
     MaterialPageRoute<void>(builder: (_) => const ExperienceListScreen()),
   );
