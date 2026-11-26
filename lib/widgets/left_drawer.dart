@@ -1,11 +1,12 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:myportofolio_mobile/screens/education_form.dart';
+import 'package:myportofolio_mobile/screens/experience_list_screen.dart';
 import 'package:myportofolio_mobile/screens/login_screen.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/project_list_screen.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/widgets/experience_navigation.dart';
 import 'package:provider/provider.dart';
 
 class LeftDrawer extends StatelessWidget {
@@ -71,14 +72,19 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.school_outlined),
-            title: const Text('Add Education'),
+            leading: const Icon(Icons.work_outline),
+            title: const Text('Lihat Experience'),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute<void>(
-                builder: (_) => const EducationFormPage(),
+                builder: (_) => const ExperienceListScreen(),
               ),
             ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_business),
+            title: const Text('Tambah Experience'),
+            onTap: () => openExperienceForm(context),
           ),
           if (!isLoggedIn)
             ListTile(

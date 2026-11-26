@@ -14,8 +14,8 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("Lihat Proyek", Icons.folder, Colors.blue),
     ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
     ItemHomepage("Lihat Skills", Icons.star, Colors.purple),
-    ItemHomepage("Lihat Education", Icons.school, Colors.teal),
-    ItemHomepage("Tambah Education", Icons.school_outlined, Colors.orange),
+    ItemHomepage("Lihat Experience", Icons.work_outline, Colors.teal),
+    ItemHomepage("Tambah Experience", Icons.add_business, Colors.orange),
     ItemHomepage("Logout", Icons.logout, Colors.red),
   ];
 

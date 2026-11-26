@@ -1,10 +1,11 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:myportofolio_mobile/screens/education_form.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/project_list_screen.dart';
+import 'package:myportofolio_mobile/screens/experience_list_screen.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/widgets/experience_navigation.dart';
 import 'package:provider/provider.dart';
 
 /// Kartu tombol pada halaman utama.
@@ -34,6 +35,13 @@ class ItemCard extends StatelessWidget {
           MaterialPageRoute<void>(builder: (_) => const ProjectListScreen()),
         );
         break;
+      case 'Lihat Experience':
+        _showSnack(context, 'Kamu telah menekan tombol ${item.name}!');
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(builder: (_) => const ExperienceListScreen()),
+        );
+        break;
       case 'Tambah Proyek':
         final loggedIn = await ensureLoggedIn(context);
         if (!loggedIn || !context.mounted) return;
@@ -43,12 +51,8 @@ class ItemCard extends StatelessWidget {
           MaterialPageRoute<void>(builder: (_) => const ProjectFormPage()),
         );
         break;
-      case 'Tambah Education':
-        _showSnack(context, 'Kamu telah menekan tombol ${item.name}!');
-        Navigator.push(
-          context,
-          MaterialPageRoute<void>(builder: (_) => const EducationFormPage()),
-        );
+      case 'Tambah Experience':
+        await openExperienceForm(context);
         break;
       case 'Logout':
         final auth = context.read<AuthState>();
